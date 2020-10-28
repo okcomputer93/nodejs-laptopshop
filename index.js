@@ -12,6 +12,7 @@ const laptopData = JSON.parse(json);
 const server = http.createServer((req, res) => {
     //Routing
     const pathName = url.parse(req.url, true).pathname;
+    //console.log(pathName);
     const id = url.parse(req.url, true).query.id;
 
     //PRODUCTS OVERVIEW
@@ -42,6 +43,14 @@ const server = http.createServer((req, res) => {
             res.end(output);
         });
     }
+    //IMAGES
+    else if ((/\.(jpg|jpeg|png|gif)$/i).test(pathName)) {
+        fileSystem.readFile(`${__dirname}/data/img/${pathName}`, (err, data) => {
+            res.writeHead(200, {'Content-type': 'image/jpg'});
+            res.end(data);
+        });
+    }
+
     //URL NOT FOUND
     else {
         res.writeHead(404, {'Content-type': 'text/html'});
