@@ -16,7 +16,7 @@ const server = http.createServer((req, res) => {
 
     if (pathName === '/products' || pathName === '/') {
         res.writeHead(200, {'Content-type': 'text/html'});
-        res.end('This is the PRODUCTS page');
+        
     }
     else if (pathName === '/laptop' && id < laptopData.length) {
         res.writeHead(200, {'Content-type': 'text/html'});
@@ -24,15 +24,7 @@ const server = http.createServer((req, res) => {
         //This is asynchronus, so users don't wait until it finishes to read this file
         fileSystem.readFile(`${__dirname}/templates/template-laptop.html`, 'utf-8', (err, data) => {
             const laptop = laptopData[id];
-            let output = data.replace(/{%PRODUCTNAME%}/g, laptop.productName);
-            output = output.replace(/{%IMAGE%}/g, laptop.image);
-            output = output.replace(/{%SCREEN%}/g, laptop.screen);
-            output = output.replace(/{%CPU%}/g, laptop.cpu);
-            output = output.replace(/{%SCREEN%}/g, laptop.screen);
-            output = output.replace(/{%STORAGE%}/g, laptop.storage);
-            output = output.replace(/{%RAM%}/g, laptop.ram);
-            output = output.replace(/{%DESCRIPTION%}/g, laptop.description);
-            output = output.replace(/{%PRICE%}/g, laptop.price);
+            const output = replaceTemplate(data, laptop);
             res.end(output);
         });
     }
@@ -47,3 +39,18 @@ const server = http.createServer((req, res) => {
 server.listen(1337, '127.0.0.1', () => {
     console.log('Listening for requests now');
 });
+
+function replaceTemplate(originalHTML, laptop) 
+{
+    let output = originalHTML.replace(/{%PRODUCTNAME%}/g, laptop.productName);
+    output = output.replace(/{%IMAGE%}/g, laptop.image);
+    output = output.replace(/{%SCREEN%}/g, laptop.screen);
+    output = output.replace(/{%CPU%}/g, laptop.cpu);
+    output = output.replace(/{%SCREEN%}/g, laptop.screen);
+    output = output.replace(/{%STORAGE%}/g, laptop.storage);
+    output = output.replace(/{%RAM%}/g, laptop.ram);
+    output = output.replace(/{%DESCRIPTION%}/g, laptop.description);
+    output = output.replace(/{%PRICE%}/g, laptop.price);
+    output = output.replace(/{%ID%}/g, laptop.id);
+    return output;
+}
