@@ -29,7 +29,7 @@ const server = http.createServer((req, res) => {
             output = output.replace(/{%SCREEN%}/g, laptop.screen);
             output = output.replace(/{%CPU%}/g, laptop.cpu);
             output = output.replace(/{%SCREEN%}/g, laptop.screen);
-            output = output.replace(/{%STORAGE%}/g, laptop.storgae);
+            output = output.replace(/{%STORAGE%}/g, laptop.storage);
             output = output.replace(/{%RAM%}/g, laptop.ram);
             output = output.replace(/{%DESCRIPTION%}/g, laptop.description);
             output = output.replace(/{%PRICE%}/g, laptop.price);
