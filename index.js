@@ -11,16 +11,15 @@ const laptopData = JSON.parse(json);
 const server = http.createServer((req, res) => {
     //Routing
     const pathName = url.parse(req.url, true).pathname;
-    const query = url.parse(req.url, true).query;
-    console.log(query);
+    const id = url.parse(req.url, true).query.id;
 
     if (pathName === '/products' || pathName === '/') {
         res.writeHead(200, {'Content-type': 'text/html'});
         res.end('This is the PRODUCTS page');
     }
-    else if (pathName === '/laptop') {
+    else if (pathName === '/laptop' && id < laptopData.length) {
         res.writeHead(200, {'Content-type': 'text/html'});
-        res.end('This is the LAPTOP page');
+        res.end(`This is the LAPTOP page for laptop ${id}`);
     }
 
     res.writeHead(404, {'Content-type': 'text/html'});
