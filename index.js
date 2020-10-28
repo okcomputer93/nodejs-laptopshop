@@ -14,10 +14,24 @@ const server = http.createServer((req, res) => {
     const pathName = url.parse(req.url, true).pathname;
     const id = url.parse(req.url, true).query.id;
 
+    //PRODUCTS OVERVIEW
     if (pathName === '/products' || pathName === '/') {
         res.writeHead(200, {'Content-type': 'text/html'});
         
+        fileSystem.readFile(`${__dirname}/templates/template-overview.html`, 'utf-8', (err, data) => {
+            let overviewOutput = data;
+            
+            fileSystem.readFile(`${__dirname}/templates/template-card.html`, 'utf-8', (err, data) => {
+                const cardsOutput = laptopData.map(el => replaceTemplate(data, el)).join('');
+                overviewOutput = overviewOutput.replace('{%CARDS%}', cardsOutput)
+                res.end(overviewOutput);
+            });
+        });
+
+        
     }
+
+    //LAPTOP DETAIL
     else if (pathName === '/laptop' && id < laptopData.length) {
         res.writeHead(200, {'Content-type': 'text/html'});
         
@@ -28,6 +42,7 @@ const server = http.createServer((req, res) => {
             res.end(output);
         });
     }
+    //URL NOT FOUND
     else {
         res.writeHead(404, {'Content-type': 'text/html'});
         res.end('Uh oh. That was unexpected.');
